@@ -116,7 +116,7 @@ describe('Personas API Endpoints', () => {
         assert.strictEqual(response.body.persona.nombre, 'Diego Portales');
         assert.strictEqual(response.body.persona.rut, '111111111');
         assert.strictEqual(response.body.persona.ciudad, 'Valparaiso');
-        assert.strictEqual(response.body.persona.gustos, ['comida', 'libros', 'juegos']);
+        assert.deepStrictEqual(response.body.persona.gustos, ['comida', 'libros', 'juegos']);
         const list = store.getAll();
         assert.strictEqual(list.length, 1);
       } finally {

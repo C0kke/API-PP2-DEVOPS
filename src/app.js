@@ -93,6 +93,15 @@ function handleRequest(req, res) {
             return sendJSON(res, 400, { error: 'La ciudad es obligatoria y debe ser una cadena válida.' });
           }
 
+          if (gustos && !Array.isArray(gustos)) {
+            const gustosArray = Array.from(gustos);
+            gustos = gustosArray;
+          }
+
+          if (!gustos) {
+            gustos = [];
+          }
+
           try {
             const newPerson = store.add({ nombre, rut, fechaNacimiento, ciudad, gustos });
             return sendJSON(res, 201, {
