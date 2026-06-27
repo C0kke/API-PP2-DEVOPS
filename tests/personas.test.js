@@ -68,13 +68,15 @@ describe('Personas API Endpoints', () => {
         nombre: 'Juan Perez',
         rut: '12.345.678-9',
         fechaNacimiento: '1990-05-15',
-        ciudad: 'Santiago'
+        ciudad: 'Santiago',
+        gustos: ['comida', 'libros', 'juegos']
       });
       store.add({
         nombre: 'Maria Gomez',
         rut: '98.765.432-1',
         fechaNacimiento: '1985-11-20',
-        ciudad: 'Concepcion'
+        ciudad: 'Concepcion',
+        gustos: ['musica', 'videojuegos', 'leer']
       });
 
       const { request, close } = await startTestServer();
@@ -98,7 +100,8 @@ describe('Personas API Endpoints', () => {
         nombre: 'Diego Portales',
         rut: '11.111.111-1',
         fechaNacimiento: '1993-02-11',
-        ciudad: 'Valparaiso'
+        ciudad: 'Valparaiso',
+        gustos: ['comida', 'libros', 'juegos']
       };
 
       const { request, close } = await startTestServer();
@@ -113,7 +116,7 @@ describe('Personas API Endpoints', () => {
         assert.strictEqual(response.body.persona.nombre, 'Diego Portales');
         assert.strictEqual(response.body.persona.rut, '111111111');
         assert.strictEqual(response.body.persona.ciudad, 'Valparaiso');
-
+        assert.strictEqual(response.body.persona.gustos, ['comida', 'libros', 'juegos']);
         const list = store.getAll();
         assert.strictEqual(list.length, 1);
       } finally {
@@ -146,7 +149,8 @@ describe('Personas API Endpoints', () => {
         nombre: 'RUT Malo',
         rut: '1234-invalid',
         fechaNacimiento: '1990-01-01',
-        ciudad: 'Antofagasta'
+        ciudad: 'Antofagasta',
+        gustos: ['comida', 'libros', 'juegos']
       };
 
       const { request, close } = await startTestServer();
@@ -168,7 +172,8 @@ describe('Personas API Endpoints', () => {
         nombre: 'Fecha Mala',
         rut: '15.555.555-5',
         fechaNacimiento: '',
-        ciudad: 'Temuco'
+        ciudad: 'Temuco',
+        gustos: ['comida', 'libros', 'juegos']
       };
 
       const { request, close } = await startTestServer();
@@ -190,7 +195,8 @@ describe('Personas API Endpoints', () => {
         nombre: 'Original',
         rut: '12.345.678-9',
         fechaNacimiento: '1990-01-01',
-        ciudad: 'Santiago'
+        ciudad: 'Santiago',
+        gustos: ['comida', 'libros', 'juegos']
       };
 
       const { request, close } = await startTestServer();
@@ -205,7 +211,8 @@ describe('Personas API Endpoints', () => {
           nombre: 'Duplicado',
           rut: '123456789',
           fechaNacimiento: '1995-10-10',
-          ciudad: 'Rancagua'
+          ciudad: 'Rancagua',
+          gustos: ['comida', 'libros', 'juegos']
         };
 
         const response2 = await request('/api/personas', {
@@ -227,7 +234,8 @@ describe('Personas API Endpoints', () => {
         nombre: 'A eliminar',
         rut: '33.333.333-3',
         fechaNacimiento: '1980-04-04',
-        ciudad: 'La Serena'
+        ciudad: 'La Serena',
+        gustos: ['comida', 'libros', 'juegos']
       });
 
       assert.strictEqual(store.getAll().length, 1);
@@ -251,7 +259,8 @@ describe('Personas API Endpoints', () => {
         nombre: 'A eliminar con formato',
         rut: '444444444',
         fechaNacimiento: '1980-04-04',
-        ciudad: 'La Serena'
+        ciudad: 'La Serena',
+        gustos: ['comida', 'libros', 'juegos']
       });
 
       const { request, close } = await startTestServer();
