@@ -24,4 +24,4 @@ jobs:
           node-version: 22.x
 
       - name: Run unit tests
-        run: node --test tests/personas.test.js
+        run: node --test ./tests/personas.test.js
