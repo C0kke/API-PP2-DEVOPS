@@ -10,10 +10,6 @@ jobs:
   build-and-test:
     runs-on: ubuntu-latest
 
-    defaults:
-      run:
-        working-directory: PP2Devops
-
     steps:
       - name: Checkout repository code
         uses: actions/checkout@v4
