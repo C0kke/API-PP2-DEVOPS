@@ -18,7 +18,8 @@ const store = {
       nombre: person.nombre.trim(),
       rut: cleanRut,
       fechaNacimiento: person.fechaNacimiento.trim(),
-      ciudad: person.ciudad.trim()
+      ciudad: person.ciudad.trim(),
+      gustos: person.gustos || []
     };
 
     personas.push(newPerson);

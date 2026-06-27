@@ -75,7 +75,7 @@ function handleRequest(req, res) {
     if (pathname === '/api/personas' && method === 'POST') {
       return parseJSONBody(req)
         .then(body => {
-          const { nombre, rut, fechaNacimiento, ciudad } = body;
+          const { nombre, rut, fechaNacimiento, ciudad, gustos = [] } = body;
 
           if (!nombre || typeof nombre !== 'string' || nombre.trim().length === 0) {
             return sendJSON(res, 400, { error: 'El nombre es obligatorio y debe ser una cadena válida.' });
@@ -94,7 +94,7 @@ function handleRequest(req, res) {
           }
 
           try {
-            const newPerson = store.add({ nombre, rut, fechaNacimiento, ciudad });
+            const newPerson = store.add({ nombre, rut, fechaNacimiento, ciudad, gustos });
             return sendJSON(res, 201, {
               message: 'Persona agregada correctamente.',
               persona: newPerson
