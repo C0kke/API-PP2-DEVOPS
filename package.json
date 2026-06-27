@@ -1,0 +1,16 @@
+{
+  "name": "pp2devops-backend",
+  "version": "1.0.0",
+  "description": "Simple REST API to store person records in-memory, built with Node.js and Express.",
+  "main": "src/server.js",
+  "scripts": {
+    "start": "node src/server.js",
+    "test": "node --test tests/personas.test.js"
+  },
+  "dependencies": {},
+  "devDependencies": {},
+  "engines": {
+    "node": ">=18.0.0"
+  },
+  "private": true
+}
