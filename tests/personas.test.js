@@ -110,6 +110,7 @@ describe('Personas API Endpoints', () => {
           method: 'POST',
           body: nuevaPersona
         });
+        // a
 
         assert.strictEqual(response.status, 201);
         assert.strictEqual(response.body.message, 'Persona agregada correctamente.');
