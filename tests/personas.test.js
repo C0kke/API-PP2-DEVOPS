@@ -1,4 +1,4 @@
-const { describe, it, beforeEach } = require('node:test');
+const { describe, it, beforeEach, after } = require('node:test');
 const assert = require('node:assert');
 const http = require('http');
 const handleRequest = require('../src/app');
@@ -46,8 +46,8 @@ function startTestServer() {
 }
 
 describe('Personas API Endpoints', () => {
-  beforeEach(() => {
-    store.clear();
+  beforeEach(async () => {
+    await store.clear();
   });
 
   describe('GET /api/personas', () => {
@@ -64,14 +64,14 @@ describe('Personas API Endpoints', () => {
     });
 
     it('debería retornar todas las personas registradas', async () => {
-      store.add({
+      await store.add({
         nombre: 'Juan Perez',
         rut: '12.345.678-9',
         fechaNacimiento: '1990-05-15',
         ciudad: 'Santiago',
         gustos: ['comida', 'libros', 'juegos']
       });
-      store.add({
+      await store.add({
         nombre: 'Maria Gomez',
         rut: '98.765.432-1',
         fechaNacimiento: '1985-11-20',
@@ -118,7 +118,7 @@ describe('Personas API Endpoints', () => {
         assert.strictEqual(response.body.persona.rut, '111111111');
         assert.strictEqual(response.body.persona.ciudad, 'Valparaiso');
         assert.deepStrictEqual(response.body.persona.gustos, ['comida', 'libros', 'juegos']);
-        const list = store.getAll();
+        const list = await store.getAll();
         assert.strictEqual(list.length, 1);
       } finally {
         await close();
@@ -231,7 +231,7 @@ describe('Personas API Endpoints', () => {
 
   describe('DELETE /api/personas/:rut', () => {
     it('debería eliminar a una persona registrada por su RUT', async () => {
-      store.add({
+      await store.add({
         nombre: 'A eliminar',
         rut: '33.333.333-3',
         fechaNacimiento: '1980-04-04',
@@ -239,7 +239,7 @@ describe('Personas API Endpoints', () => {
         gustos: ['comida', 'libros', 'juegos']
       });
 
-      assert.strictEqual(store.getAll().length, 1);
+      assert.strictEqual((await store.getAll()).length, 1);
 
       const { request, close } = await startTestServer();
       try {
@@ -249,14 +249,14 @@ describe('Personas API Endpoints', () => {
 
         assert.strictEqual(response.status, 200);
         assert.strictEqual(response.body.message, 'Persona eliminada correctamente.');
-        assert.strictEqual(store.getAll().length, 0);
+        assert.strictEqual((await store.getAll()).length, 0);
       } finally {
         await close();
       }
     });
 
     it('debería poder eliminar a una persona usando RUT con guion y puntos', async () => {
-      store.add({
+      await store.add({
         nombre: 'A eliminar con formato',
         rut: '444444444',
         fechaNacimiento: '1980-04-04',
@@ -272,7 +272,7 @@ describe('Personas API Endpoints', () => {
 
         assert.strictEqual(response.status, 200);
         assert.strictEqual(response.body.message, 'Persona eliminada correctamente.');
-        assert.strictEqual(store.getAll().length, 0);
+        assert.strictEqual((await store.getAll()).length, 0);
       } finally {
         await close();
       }
@@ -291,5 +291,9 @@ describe('Personas API Endpoints', () => {
         await close();
       }
     });
+  });
+
+  after(async () => {
+    await store.close();
   });
 });
