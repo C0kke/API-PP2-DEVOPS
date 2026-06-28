@@ -57,7 +57,7 @@ function parseJSONBody(req) {
   });
 }
 
-function handleRequest(req, res) {
+async function handleRequest(req, res) {
   try {
     const parsedUrl = url.parse(req.url, true);
     const pathname = parsedUrl.pathname;
@@ -65,7 +65,7 @@ function handleRequest(req, res) {
 
     if (pathname === '/api/personas' && method === 'GET') {
       try {
-        const list = store.getAll();
+        const list = await store.getAll();
         return sendJSON(res, 200, list);
       } catch (error) {
         return sendJSON(res, 500, { error: 'Error interno del servidor.' });
@@ -74,7 +74,7 @@ function handleRequest(req, res) {
 
     if (pathname === '/api/personas' && method === 'POST') {
       return parseJSONBody(req)
-        .then(body => {
+        .then(async body => {
           const { nombre, rut, fechaNacimiento, ciudad, gustos = [] } = body;
 
           if (!nombre || typeof nombre !== 'string' || nombre.trim().length === 0) {
@@ -103,7 +103,7 @@ function handleRequest(req, res) {
           }
 
           try {
-            const newPerson = store.add({ nombre, rut, fechaNacimiento, ciudad, gustos });
+            const newPerson = await store.add({ nombre, rut, fechaNacimiento, ciudad, gustos });
             return sendJSON(res, 201, {
               message: 'Persona agregada correctamente.',
               persona: newPerson
@@ -125,7 +125,7 @@ function handleRequest(req, res) {
       }
 
       try {
-        const deleted = store.deleteByRut(rutParam);
+        const deleted = await store.deleteByRut(rutParam);
         if (!deleted) {
           return sendJSON(res, 404, { error: `No se encontró ninguna persona registrada con el RUT: ${rutParam}` });
         }

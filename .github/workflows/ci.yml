@@ -10,6 +10,21 @@ jobs:
   build-and-test:
     runs-on: ubuntu-latest
 
+    services:
+      postgres:
+        image: postgres:15-alpine
+        env:
+          POSTGRES_USER: postgres
+          POSTGRES_PASSWORD: postgres
+          POSTGRES_DB: personas_db
+        ports:
+          - 5432:5432
+        options: >-
+          --health-cmd pg_isready
+          --health-interval 10s
+          --health-timeout 5s
+          --health-retries 5
+
     steps:
       - name: Checkout repository code
         uses: actions/checkout@v4
@@ -19,5 +34,14 @@ jobs:
         with:
           node-version: 22.x
 
+      - name: Install dependencies
+        run: npm install
+
       - name: Run unit tests
         run: node --test ./tests/personas.test.js
+        env:
+          DB_HOST: localhost
+          DB_PORT: 5432
+          DB_USER: postgres
+          DB_PASSWORD: postgres
+          DB_NAME: personas_db

@@ -7,7 +7,9 @@
     "start": "node src/server.js",
     "test": "node --test tests/personas.test.js"
   },
-  "dependencies": {},
+  "dependencies": {
+    "pg": "^8.12.0"
+  },
   "devDependencies": {},
   "engines": {
     "node": ">=18.0.0"
